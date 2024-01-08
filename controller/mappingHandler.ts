@@ -1,10 +1,11 @@
-import * as randomatic from "randomatic";
+import randomatic from "randomatic";
 
 import Mapping from "../model/mapping.model";
 import { Collection } from "mongoose";
 
-const generateUniqueNumber = async () => {
-    const uniqueInteger = parseInt(randomatic('0', 6));
+const generateUniqueNumber = async (): Promise<number> => {
+    const randomInt = randomatic('0', 6);
+    const uniqueInteger = parseInt(randomInt);
     const existingEntry = await Mapping.findOne({uniqueId: uniqueInteger});
     if(existingEntry){
         return generateUniqueNumber();
