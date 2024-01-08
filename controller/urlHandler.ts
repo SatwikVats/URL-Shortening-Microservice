@@ -1,10 +1,10 @@
-import * as randomatic from "randomatic";
+import randomatic from "randomatic";
 
 import Mapping from "../model/mapping.model";
 import URL from "../model/url.model";
 import convertIdToShortURL from "../util/convertIdToShortURL";
 
-const generateUniqueNumber = async () => {
+const generateUniqueNumber = async (): Promise<number> => {
     const uniqueInteger = parseInt(randomatic('0', 6));
     const existingEntry = await Mapping.findOne({uniqueId: uniqueInteger});
     if(existingEntry){
@@ -36,7 +36,7 @@ const urlHandler = async (req: any, res: any)=>{
             res.status(200).json({"data": result, "statusCode": 200, "errorCode": null, "errorMessage": null});
         }
         else{
-            const integerId = generateUniqueNumber();
+            const integerId = await generateUniqueNumber();
             const shortURL = convertIdToShortURL(integerId);
             const urlObject = {
                 longURL: req.body.url,
