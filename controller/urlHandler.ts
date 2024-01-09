@@ -16,21 +16,7 @@ const generateUniqueNumber = async (): Promise<number> => {
 }
 
 const urlHandler = async (req: any, res: any)=>{
-    try{
-        // const result = await Mapping.findOne({longURL: req.body.url});
-        // if(result){
-        //     const integerId = result.uniqueId;
-        //     const shortURL = convertIdToShortURL(integerId);
-        //     const urlObject = {
-        //         longURL: req.body.url,
-        //         integerId: integerId,
-        //         shortURL: shortURL,
-        //     };
-        //     const newURL = new URL(urlObject);
-        //     const savedURL = await newURL.save();
-        //     res.status(201).json({"data": savedURL, "statusCode": 201, "errorCode": null, "errorMessage": null});
-        // } 
-
+    try{ 
         const result = await URL.findOne({longURL: req.body.url});
         if(result){
             res.status(200).json({"data": result, "statusCode": 200, "errorCode": null, "errorMessage": null});
