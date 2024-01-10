@@ -35,7 +35,7 @@ const urlHandler = async (req: any, res: any)=>{
         }
     }
     catch(err){
-        res.status(500).json({message: "Error shortening the URL."});
+        res.status(500).json({message: String(err)});
     }
 }
 

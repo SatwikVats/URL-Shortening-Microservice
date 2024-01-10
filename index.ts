@@ -4,20 +4,22 @@ import cors from 'cors';
 
 import connectDB from './config/dbConfig';
 
+import urlShortenRouter from './route/url.router';
+import userRouter from './route/user.router';
+
 const app: Application = express();
 const PORT: number = 8000;
 
 app.use(express.json()); // Middleware
-app.use(cors()); // Enable CORS (Cross Origin Resource Sharing) to make the API accessible to frontend.
+app.use(cors()); 
 connectDB();
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello');
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Now listening on port ${PORT}`);
-// });
+app.use("/api/url", urlShortenRouter);
+app.use("/api/user", userRouter)
 
 
 
