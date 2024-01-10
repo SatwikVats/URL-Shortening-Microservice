@@ -15,7 +15,7 @@ const generateUniqueNumber = async (): Promise<number> => {
     }
 }
 
-const urlHandler = async (req: any, res: any)=>{
+export const urlHandler = async (req: any, res: any)=>{
     try{ 
         const result = await URL.findOne({longURL: req.body.url});
         if(result){
@@ -39,4 +39,20 @@ const urlHandler = async (req: any, res: any)=>{
     }
 }
 
-export default urlHandler;
+export const fetchLongURLHandler = async (req: any, res: any)=>{
+    try{
+        const {shortURL} = req.params;
+        const result = await URL.findOne({shortURL: shortURL});
+        if(result){
+            const {longURL} = result;
+            const responseData = {longURL};
+            res.status(200).json({"data": responseData, "statusCode": 200, "errorCode": null, "errorMessage": null});
+        }
+        else{
+            res.status(204).json({"data": {"message": "This short URL does not exist in our DB"}, "statusCode": 204, "errorCode": null, "errorMessage": null});
+        }
+    }
+    catch(err){
+        res.status(500).json({message: String(err)});
+    }
+}

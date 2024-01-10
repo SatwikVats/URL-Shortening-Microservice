@@ -1,5 +1,6 @@
 import { json } from "express";
 import jsonwebtoken from "jsonwebtoken";
+import CryptoJS from "crypto-js";
 import dotenv from "dotenv";
 import User from "../model/user.model";
 
@@ -11,8 +12,12 @@ export const fetchUser = async (req: any, res: any) => {
         console.log("typeof(user)" ,typeof(user));
         let jwtSecretKey = process.env.JWT_SECRET_KEY;
         // const token = jsonwebtoken.sign(json(user), jwtSecretKey);
+
+        let passwordSecretKey: string= process.env.PASSWORD_SECRET_KEY!;
+        const decodedPassword = CryptoJS.AES.decrypt(req.body.password, passwordSecretKey).toString(CryptoJS.enc.Utf8);
+
         if(user){
-            if(req.body.password === user.password){
+            if(req.body.password !== decodedPassword){
                 res.status(200).json({"data": user, "statusCode": 200, "errorCode": null, "errorMessage": null});
             }
             else{
@@ -31,13 +36,19 @@ export const fetchUser = async (req: any, res: any) => {
 
 export const addUser = async (req: any, res: any) => {
     try{
-        const userData = {username: req.body.username, password: req.body.password};
-        const result = await User.insertMany(userData);
-        if(result){
-            res.status(201).json({"data": result, "statusCode": 201, "errorCode": null, "errorMessage": null});
+        let passwordSecretKey: string= process.env.PASSWORD_SECRET_KEY!;
+        if(typeof(passwordSecretKey)!==undefined){
+            const userData = {username: req.body.username, password: CryptoJS.AES.encrypt(req.body.password, passwordSecretKey).toString()};
+            const result = await User.insertMany(userData);
+            if(result){
+                res.status(201).json({"data": result, "statusCode": 201, "errorCode": null, "errorMessage": null});
+            }
+            else{
+                res.status(203).json({"data": {"message": "Failed to create a new user!"}, "statusCode": 201, "errorCode": null, "errorMessage": null});
+            }
         }
         else{
-            res.status(203).json({"data": {"message": "Failed to create a new user!"}, "statusCode": 201, "errorCode": null, "errorMessage": null});
+            throw new Error("Hashing of password failed due to missing secret key!");    
         }
     }
     catch(e){
