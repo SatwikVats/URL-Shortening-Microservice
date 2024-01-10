@@ -25,6 +25,7 @@ export const urlHandler = async (req: any, res: any)=>{
             const integerId = await generateUniqueNumber();
             const shortURL = convertIdToShortURL(integerId);
             const urlObject = {
+                userId: req.body.userId,
                 longURL: req.body.url,
                 integerId: integerId,
                 shortURL: shortURL,
@@ -41,8 +42,10 @@ export const urlHandler = async (req: any, res: any)=>{
 
 export const fetchLongURLHandler = async (req: any, res: any)=>{
     try{
-        const {shortURL} = req.params;
-        const result = await URL.findOne({shortURL: shortURL});
+        const {shortURL, userId} = req.params;
+        console.log("shortURL", shortURL);
+        console.log("userId", userId);
+        const result = await URL.findOne({shortURL: shortURL, userId: userId});
         if(result){
             const {longURL} = result;
             const responseData = {longURL};

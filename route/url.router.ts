@@ -4,8 +4,9 @@ const router = express.Router();
 import {urlHandler} from "../controller/urlHandler";
 import { fetchLongURLHandler } from "../controller/urlHandler";
 import URL from "../model/url.model";
+import { verifyUser } from "../middleware/verifyUser";
 
-router.route('/shorten').post(urlHandler);
-router.route('/long/:shortURL').get(fetchLongURLHandler);
+router.route('/shorten').post(verifyUser, urlHandler);
+router.route('/long/:shortURL/:userId').get(verifyUser, fetchLongURLHandler);
 
 export default router;
