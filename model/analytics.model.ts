@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const clickSchema = new mongoose.Schema({
     location: {type: String},
-    ip: {type: String},
+    userAgent: {type: String},
 },{
     timestamps: true,
 })
@@ -11,7 +11,7 @@ const analyticsSchema = new mongoose.Schema({
     userId: {type: String, required: true},
     longURL: {type: String, required: true},
     shortURL: {type: String, required: true},
-    frequency: {type: Number, required: true},
+    totalClicks: {type: Number, required: true},
     click: [clickSchema],
 },{
     timestamps: true,

@@ -6,6 +6,7 @@ import connectDB from './config/dbConfig';
 
 import urlShortenRouter from './route/url.router';
 import userRouter from './route/user.router';
+import analyticsRouter from './route/analytics.router';
 
 const app: Application = express();
 const PORT: number = 8000;
@@ -19,7 +20,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use("/api/url", urlShortenRouter);
-app.use("/api/user", userRouter)
+app.use("/api/user", userRouter);
+app.use("/api/analytics", analyticsRouter);
 
 
 

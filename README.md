@@ -7,3 +7,5 @@ References-
 1. https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/
 
 2. https://dev.to/juliecherner/authentication-with-jwt-tokens-in-typescript-with-express-3gb1
+
+3. https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
