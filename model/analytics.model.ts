@@ -18,6 +18,7 @@ const analyticsSchema = new mongoose.Schema({
 });
 
 analyticsSchema.index({userId: 1, longURL: 1}, {unique: true});
+analyticsSchema.index({createdAt: 1}, {expireAfterSeconds: 172800});
 
 const Analytics = mongoose.model("Analytics", analyticsSchema);
 

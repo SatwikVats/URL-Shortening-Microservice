@@ -10,6 +10,7 @@ const urlSchema = new mongoose.Schema({
 });
 
 urlSchema.index({userId: 1, longURL: 1}, {unique: true});
+urlSchema.index({createdAt: 1}, {expireAfterSeconds: 172800});
 
 const URL = mongoose.model("Url", urlSchema);
 
