@@ -9,14 +9,12 @@ dotenv.config()
 export const fetchUser = async (req: any, res: any) => {
     try{
         const user = await User.findOne({username: req.body.username});
-        console.log("typeof(user)" ,typeof(user));
-        
 
         if(user){
 
             let jwtSecretKey: string = process.env.JWT_SECRET_KEY!;
-            console.log("jwtSecretKey while signing:", jwtSecretKey);
-            const token = jwt.sign(user.username, jwtSecretKey);
+            const userId = user._id.toString();
+            const token = jwt.sign({userId: userId, username: req.body.username}, jwtSecretKey);
 
             let passwordSecretKey: string= process.env.PASSWORD_SECRET_KEY!;
             const decodedPassword = CryptoJS.AES.decrypt(req.body.password, passwordSecretKey).toString(CryptoJS.enc.Utf8);
