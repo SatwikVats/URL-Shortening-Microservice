@@ -1,6 +1,7 @@
 # URL-Shortening-Microservice
 
-##General Overview:
+## General Overview:
+
 This is a sophisticated URL shortening service that not only shortens URLs but also provides detailed analytics. This service caters to high traffic, ensuring performance and scalability. Tech stack used for building the service is Node.js and Express.js, along with Typescript. The Databse used here in MongoDB.
 
 ## Architecture:
@@ -32,7 +33,7 @@ We are using hash where each long URL (key) will be mapped to a 6-digit unique i
 - For each short URL, we have an array of objects 'clicks', where each objects contains the timstamp recorded during click and geographical location in the form of longitude and latitude.
 - We have an API which provides us time-based analytics in the form of most active hours.
 
-References-
+## References-
 
 1. https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/
 2. https://dev.to/juliecherner/authentication-with-jwt-tokens-in-typescript-with-express-3gb1
