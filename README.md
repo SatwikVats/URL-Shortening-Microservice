@@ -33,6 +33,28 @@ We are using hash where each long URL (key) will be mapped to a 6-digit unique i
 - For each short URL, we have an array of objects 'clicks', where each objects contains the timstamp recorded during click and geographical location in the form of longitude and latitude.
 - We have an API which provides us time-based analytics in the form of most active hours.
 
+## Steps to host the server locally:
+
+- Clone the project from Github repository to your local machine.
+- Run the following commands on your terminal to initialize npm and install all the relevant packages.
+
+```
+npm init
+```
+
+```
+npm install
+```
+
+- Ask the author to share .env file to be used for the project.
+- Use the following command and server will be up and running on PORT 8000 of your machine.
+
+```
+npm start
+```
+
+- Use Postman to test the APIs. You may ask the author for curl scripts of respective endpoints for convenience.
+
 ## References-
 
 1. https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/
