@@ -61,3 +61,5 @@ npm start
 2. https://dev.to/juliecherner/authentication-with-jwt-tokens-in-typescript-with-express-3gb1
 3. https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
 4. https://www.mongodb.com/docs/manual/tutorial/expire-data/#expire-documents-at-a-specific-clock-time
+5. https://www.youtube.com/watch?v=bP4BeUjNkXc
+6. https://redis.io/docs/connect/clients/om-clients/stack-node/
