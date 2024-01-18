@@ -1,13 +1,12 @@
 import randomatic from "randomatic";
 
-import Mapping from "../model/mapping.model";
 import URL from "../model/url.model";
 import convertIdToShortURL from "../util/convertIdToShortURL";
 import Analytics from "../model/analytics.model";
 
 const generateUniqueNumber = async (): Promise<number> => {
     const uniqueInteger = parseInt(randomatic('0', 6));
-    const existingEntry = await Mapping.findOne({uniqueId: uniqueInteger});
+    const existingEntry = await URL.findOne({integerId: uniqueInteger});
     if(existingEntry){
         return generateUniqueNumber();
     }
