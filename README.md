@@ -6,7 +6,7 @@ This is a sophisticated URL shortening service that not only shortens URLs but a
 
 ## Architecture:
 
-We are following a MVC (Model-View-COntroller) architecture here. The modular structure of the repository is as follows:
+We are following a MVC (Model-View-Controller) architecture here. The modular structure of the repository is as follows:
 
 - `config`: This module contains all the configuration files; which return an object establishing connection with the client.
 - `controller`: This module contains all the relevant API business logic. We process the request objects, make queries to the DB, process the queried data and send response as per our needs in the handler functions.
