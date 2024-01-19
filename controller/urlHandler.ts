@@ -72,7 +72,9 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
         const redisClient = await connectRedis();
         const redisResult = await redisClient.hGetAll(`urls:${userId}:${shortURL}`);
         result = redisResult;
+
         if(!redisResult){
+            
             const dbResult = await URL.findOne({shortURL: shortURL, userId: userId});
 
             const urlObject = {

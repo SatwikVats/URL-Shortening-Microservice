@@ -33,6 +33,11 @@ We are using hash where each long URL (key) will be mapped to a 6-digit unique i
 - For each short URL, we have an array of objects 'clicks', where each objects contains the timstamp recorded during click and geographical location in the form of longitude and latitude.
 - We have an API which provides us time-based analytics in the form of most active hours.
 
+## Caching:
+
+Redis has been implemented to smoothen the URL retrieval process by reducing the load on DB (by reducing the number of queries) and enhancing the performance (query execution time). We have setup the client connection in `redis.ts` under `config` module. Using the same client, we are performing all the operations throughout our project. In this case, Redis takes up the default port of 6379.
+To install Redis and run the server on your local machine, follow the offical Redis [documentation](https://redis.io/docs/install/install-redis/).
+
 ## Steps to host the server locally:
 
 - Clone the project from Github repository to your local machine.
