@@ -3,6 +3,7 @@ import randomatic from "randomatic";
 import URL from "../model/url.model";
 import convertIdToShortURL from "../util/convertIdToShortURL";
 import Analytics from "../model/analytics.model";
+import connectRedis from "../config/redis";
 
 const generateUniqueNumber = async (): Promise<number> => {
     const uniqueInteger = parseInt(randomatic('0', 6));
@@ -16,40 +17,47 @@ const generateUniqueNumber = async (): Promise<number> => {
 }
 
 export const urlHandler = async (req: any, res: any)=>{
-    try{ 
-        const result = await URL.findOne({longURL: req.body.url, userId: req.params.userId});
-        if(result){
-            res.status(203).json({"data": {"message": "Short URL for this URL has already been generated!"}, "statusCode": 203, "errorCode": null, "errorMessage": null});
+    try{       
+        const integerId = await generateUniqueNumber();
+        const shortURL = convertIdToShortURL(integerId);
+        const urlObject = {
+            userId: req.params.userId,
+            longURL: req.body.url,
+            integerId: integerId,
+            shortURL: shortURL,
+        };
+        const newURL = new URL(urlObject);
+
+        //Data going to cache
+        const redisClient = await connectRedis();
+        const redisResult = await redisClient.hSet(`urls:${req.params.userId}:${shortURL}`, urlObject);
+        await redisClient.disconnect();
+
+        if(!redisResult){
+            console.warn("Failed to save url to cache!");
+        }
+        
+
+        //Data posted in DB
+        const savedURL = await newURL.save();
+
+        //Analytics for the URL posted in DB
+        const analyticsObject = {
+            userId: req.params.userId,
+            longURL: req.body.url,
+            shortURL: shortURL,
+            totalClicks: 0,
+            click: [],
+        }
+        const newAnalytics = new Analytics(analyticsObject);
+        const savedAnalytics = await newAnalytics.save();
+
+        if(savedURL && savedAnalytics){
+            res.status(201).json({"data": savedURL, "statusCode": 201, "errorCode": null, "errorMessage": null});
         }
         else{
-            const integerId = await generateUniqueNumber();
-            const shortURL = convertIdToShortURL(integerId);
-            const urlObject = {
-                userId: req.params.userId,
-                longURL: req.body.url,
-                integerId: integerId,
-                shortURL: shortURL,
-            };
-            const newURL = new URL(urlObject);
-            const savedURL = await newURL.save();
-
-            const analyticsObject = {
-                userId: req.params.userId,
-                longURL: req.body.url,
-                shortURL: shortURL,
-                totalClicks: 0,
-                click: [],
-            }
-            const newAnalytics = new Analytics(analyticsObject);
-            const savedAnalytics = await newAnalytics.save();
-
-            if(savedURL && savedAnalytics){
-                res.status(201).json({"data": savedURL, "statusCode": 201, "errorCode": null, "errorMessage": null});
-            }
-            else{
-                res.status(203).json({"data": {"message": "Failed to save the user details!"}, "statusCode": 203, "errorCode": null, "errorMessage": null});
-            }            
-        }
+            res.status(203).json({"data": {"message": "Failed to save the user details!"}, "statusCode": 203, "errorCode": null, "errorMessage": null});
+        }            
     }
     catch(err){
         res.status(500).json({"data": null, "statusCode": 500, "errorCode": 500, "errorMessage": String(err)});
@@ -59,9 +67,26 @@ export const urlHandler = async (req: any, res: any)=>{
 export const fetchLongURLHandler = async (req: any, res: any)=>{
     try{
         const {shortURL, userId} = req.params;
-        const result = await URL.findOne({shortURL: shortURL, userId: userId});
-        if(result){
+        let result;
+        
+        const redisClient = await connectRedis();
+        const redisResult = await redisClient.hGetAll(`urls:${userId}:${shortURL}`);
+        result = redisResult;
+        if(!redisResult){
+            const dbResult = await URL.findOne({shortURL: shortURL, userId: userId});
 
+            const urlObject = {
+                userId: dbResult?.userId.toString() || "",
+                longURL: dbResult?.longURL.toString() || "",
+                integerId: dbResult?.integerId.toString() || "",
+                shortURL: dbResult?.shortURL.toString() || "",
+            };            
+            result = {...dbResult};
+            await redisClient.hSet(`urls:${userId}:${shortURL}`, urlObject);
+        }
+        await redisClient.disconnect();
+
+        if(result){
             let location = "Longitude:X Latitude:Y";
             
             //  To be captured in the Frontend and sent as a request body.
