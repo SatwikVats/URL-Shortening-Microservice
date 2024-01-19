@@ -24,11 +24,11 @@ app.use("/api/user", userRouter);
 app.use("/api/analytics", analyticsRouter);
 
 
-
 mongoose.connection.once('open', () => {
   console.log('Connected to the DB');
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
     console.log(`Now listening on port ${PORT}`);
     console.log('Server is up and running');
-  });
+
+   });
 });
