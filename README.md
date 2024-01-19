@@ -28,7 +28,7 @@ We have two endpoints for registering a new user and signing in the existing use
 
 ## URL Shortening Algoritm:
 
-We are using hash where each long URL (key) will be mapped to a 6-digit unique integer(value) and base-64 string equivalent of that integer will be the short URL. To handle expirations and auto-deletion of these short URLs along with the associated analytics, we are using MongoDB TTL indexing. We are mapping each shortURL (stored in 'urls' collection) to the userId which is the unique ObjectId of the corresponding user in 'users' collection.
+We are using hash where each long URL (key) will be mapped to a 6-digit unique integer(value) and base-64 string equivalent of that integer will be the short URL. To handle expirations and auto-deletion of these short URLs along with the associated analytics, we are using MongoDB TTL indexing. We are mapping each shortURL (stored in `urls` collection) to the `userId` which is the unique ObjectId of the corresponding user in `users` collection.
 
 ## Associated Analytics:
 
