@@ -71,10 +71,11 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
         
         const redisClient = await connectRedis();
         const redisResult = await redisClient.hGetAll(`urls:${userId}:${shortURL}`);
+        console.log("redisResult",redisResult);
         result = redisResult;
 
-        if(!redisResult){
-            
+        if(!redisResult || Object.keys(redisResult).length === 0){
+            console.log("Attempt fetching from DB:");
             const dbResult = await URL.findOne({shortURL: shortURL, userId: userId});
 
             const urlObject = {
@@ -83,7 +84,8 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
                 integerId: dbResult?.integerId.toString() || "",
                 shortURL: dbResult?.shortURL.toString() || "",
             };            
-            result = {...dbResult};
+            result = {...urlObject};
+
             await redisClient.hSet(`urls:${userId}:${shortURL}`, urlObject);
         }
         await redisClient.disconnect();

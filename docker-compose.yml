@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  
+  redis-server:
+    image: redislabs/redismod
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    platform: linux/amd64
+
+  # url-shortening-microservice:
+  #   build: .
+  #   container_name: url-shortening-microservice
+  #   ports:
+  #     - "8000:8000"
+  #   platform: linux/amd64
+  #   volumes:
+  #     - .:/code
+  #   depends_on:
+  #     - redis-server
+    
