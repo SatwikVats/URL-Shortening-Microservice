@@ -2,11 +2,11 @@
   "name": "url-shortening-microservice",
   "version": "1.0.0",
   "description": "This is URL-shortening service",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node index.ts",
-    "dev": "nodemon index.ts"
+    "dev": "ts-node index.ts"
   },
   "author": "Satwik Vats",
   "license": "ISC",
@@ -30,6 +30,7 @@
     "mongoose": "^8.0.3",
     "randomatic": "^3.1.1",
     "redis": "^4.6.12",
-    "redis-om": "^0.4.3"
+    "redis-om": "^0.4.3",
+    "ts-node": "^10.9.2"
   }
 }
