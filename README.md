@@ -53,14 +53,32 @@ npm init
 npm install
 ```
 
-- Ask the author to share .env file to be used for the project.
+- Ask the author to share .env file to be used for the project (incase you are using Dokcer since .env variables will be consumed in the container).
 - Use the following command and server will be up and running on PORT 8000 of your machine.
 
 ```
 npm start
 ```
 
+- Install Redis on your machine by following the steps in the documentation as shared above, and run the following command on your termina.
+
+```
+redis-server
+```
+
+- You may use RedisInsights to visualize the data stored in Redis.
 - Use Postman to test the APIs. You may ask the author for curl scripts of respective endpoints for convenience.
+
+## Steps to host the server locally (using Docker):
+
+- Ensure that you have [Docker Desktop](https://docs.docker.com/desktop/?_gl=1*hma6xv*_ga*MTM4MDU4NjgxMC4xNzA1Njc4MjM3*_ga_XJWPQMJYHQ*MTcwNTgyMDI5OC43LjEuMTcwNTgyMDMxNS40My4wLjA.) installed and daemon is running in the background.
+- Run the following the command on your terminal while building the image for the first time and whenever you make any changes in the codebase (rebuild would be required in that case).
+
+```
+docker compose up --build
+```
+
+- For all the subsequent running of servers, just remove `--build` tag from the previous command. Now, both the containers (one containing the redis-server and other one with url-shortening-service) start running and we can test the APIs locally.
 
 ## References-
 
