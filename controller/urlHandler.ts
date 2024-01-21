@@ -73,8 +73,8 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
         const redisResult = await redisClient.hGetAll(`urls:${userId}:${shortURL}`);
         result = redisResult;
 
-        if(!redisResult){
-            
+        if(!redisResult || Object.keys(redisResult).length === 0){
+            console.log("Data not found in cache; Attempt fetching from DB..");
             const dbResult = await URL.findOne({shortURL: shortURL, userId: userId});
 
             const urlObject = {
@@ -83,7 +83,8 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
                 integerId: dbResult?.integerId.toString() || "",
                 shortURL: dbResult?.shortURL.toString() || "",
             };            
-            result = {...dbResult};
+            result = {...urlObject};
+
             await redisClient.hSet(`urls:${userId}:${shortURL}`, urlObject);
         }
         await redisClient.disconnect();
@@ -116,7 +117,7 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
                 })
             }
             catch(err){
-                console.log("Error updating the analytics:", err);
+                console.error("Error updating the analytics:", err);
             }
 
             const {longURL} = result;

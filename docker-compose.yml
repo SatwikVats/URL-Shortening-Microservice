@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  
+  redis-server:
+    image: redislabs/redismod
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    platform: linux/amd64
+
+  url-shortening-microservice:
+    build:
+      context: .
+    container_name: url-shortening-microservice
+    environment:
+      - DOCKER=true
+    ports:
+      - "8000:8000"
+    platform: linux/amd64
+    volumes:
+      - .:/url-shortening-microservice
+      - /url-shortening-microservice/node_modules
+    depends_on:
+      - redis-server
+    command: npm start
