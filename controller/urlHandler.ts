@@ -71,11 +71,10 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
         
         const redisClient = await connectRedis();
         const redisResult = await redisClient.hGetAll(`urls:${userId}:${shortURL}`);
-        console.log("redisResult",redisResult);
         result = redisResult;
 
         if(!redisResult || Object.keys(redisResult).length === 0){
-            console.log("Attempt fetching from DB:");
+            console.log("Data not found in cache; Attempt fetching from DB..");
             const dbResult = await URL.findOne({shortURL: shortURL, userId: userId});
 
             const urlObject = {
@@ -118,7 +117,7 @@ export const fetchLongURLHandler = async (req: any, res: any)=>{
                 })
             }
             catch(err){
-                console.log("Error updating the analytics:", err);
+                console.error("Error updating the analytics:", err);
             }
 
             const {longURL} = result;

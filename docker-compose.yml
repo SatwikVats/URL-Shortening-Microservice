@@ -13,6 +13,8 @@ services:
     build:
       context: .
     container_name: url-shortening-microservice
+    environment:
+      - DOCKER=true
     ports:
       - "8000:8000"
     platform: linux/amd64
