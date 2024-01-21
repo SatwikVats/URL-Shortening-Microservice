@@ -53,7 +53,7 @@ npm init
 npm install
 ```
 
-- Ask the author to share .env file to be used for the project.
+- Ask the author to share .env file to be used for the project (incase you are using Dokcer since .env variables will be consumed in the container).
 - Use the following command and server will be up and running on PORT 8000 of your machine.
 
 ```
