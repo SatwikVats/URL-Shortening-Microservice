@@ -72,7 +72,7 @@ redis-server
 ## Steps to host the server locally (using Docker):
 
 - Ensure that you have [Docker Desktop](https://docs.docker.com/desktop/?_gl=1*hma6xv*_ga*MTM4MDU4NjgxMC4xNzA1Njc4MjM3*_ga_XJWPQMJYHQ*MTcwNTgyMDI5OC43LjEuMTcwNTgyMDMxNS40My4wLjA.) installed and daemon is running in the background.
-- Run the following the command on your terminal while building the image for the first time.
+- Run the following the command on your terminal while building the image for the first time and whenever you make any changes in the codebase (rebuild would be required in that case).
 
 ```
 docker compose up --build
